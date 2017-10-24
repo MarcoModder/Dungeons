@@ -1,0 +1,10 @@
+name: Dungeons
+version: 1.4
+author: SkyHash
+main: it.skyhash.git.dungeons.Main
+depend: [Factions]
+
+commands:
+  dg:
+    usage: /<command>
+    aliases: [dungeons, fdungeons]
