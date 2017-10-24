@@ -180,11 +180,14 @@ public class ListenerGUI implements Listener {
 			return;
 		}
 		Player p = e.getEntity();
-		Dungeon d = DungeonManager.getDungeon(p);
-		d.getPlayers().remove(p);
-		DungeonManager.getDungeons().remove(p);
-		p.sendMessage(Utils.logo+"§cYou died! You will get teleported back to this world spawn!");
-		p.teleport(p.getWorld().getSpawnLocation());
+		if(DungeonManager.getDungeons().containsKey(p))
+		{
+			Dungeon d = DungeonManager.getDungeon(p);
+			d.getPlayers().remove(p);
+			DungeonManager.getDungeons().remove(p);
+			p.sendMessage(Utils.logo+"§cYou died! You will get teleported back to this world spawn!");
+			p.teleport(p.getWorld().getSpawnLocation());
+		}
 	}
 
 	
