@@ -1,4 +1,4 @@
-package it.skyhash.git.dungeons;
+package it.skyhash.git.dungeons.FactionsUUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,28 +10,31 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.connorlinfoot.actionbarapi.ActionBarAPI;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 
 import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
 import io.lumine.xikage.mythicmobs.api.exceptions.InvalidMobTypeException;
 import io.lumine.xikage.mythicmobs.mobs.MythicMob;
+import it.skyhash.git.dungeons.Dungeon;
+import it.skyhash.git.dungeons.DungeonManager;
+import it.skyhash.git.dungeons.Main;
+import it.skyhash.git.dungeons.Utils;
 import net.milkbowl.vault.economy.Economy;
 
-public class ListenerGUI implements Listener {
+public class ListenerUUID implements Listener {
 	
 	public static Economy economy = null;
 	
 	@EventHandler
     public void onClick(InventoryClickEvent e)
     {
-        if(e.getInventory().equals(DungeonCMD.inv))
+        if(e.getInventory().equals(DungeonCMDD.inv))
         {
             if(e.getCurrentItem() != null && e.getCurrentItem().getType() != null)
             {
@@ -103,11 +106,11 @@ public class ListenerGUI implements Listener {
 	
 	public void teleport(Player p,Dungeon d)
 	{
-		MPlayer mplayer = MPlayer.get(IdUtil.getId(p.getName()));
+		FPlayer fPlayer = FPlayers.getInstance().getByPlayer(p);
 		World w = d.getWorld();
 		//Get faction object
-		Faction f = mplayer.getFaction();
-		for(MPlayer mp : f.getMPlayers())
+		Faction f = fPlayer.getFaction();
+		for(FPlayer mp : f.getFPlayers())
 		{
 			if(mp.isOnline())
 			{

@@ -1,8 +1,7 @@
-package it.skyhash.git.dungeons;
+package it.skyhash.git.dungeons.FactionsUUID;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -15,13 +14,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 
+import it.skyhash.git.dungeons.Dungeon;
+import it.skyhash.git.dungeons.Main;
+import it.skyhash.git.dungeons.Utils;
 import net.milkbowl.vault.economy.Economy;
 
-public class DungeonCMD implements CommandExecutor {
+public class DungeonCMDD implements CommandExecutor {
 	
 	public static Inventory inv;
 	public static Economy economy = null;
@@ -33,29 +35,18 @@ public class DungeonCMD implements CommandExecutor {
 			return true;
 		}
 		Player p = (Player) sender;
-		MPlayer mplayer;
 		//Get the f player
-		String uuidString = p.getUniqueId().toString();
-		UUID uuid = p.getUniqueId();
-		CommandSender commandSender = Bukkit.getConsoleSender();
-		
-		mplayer = MPlayer.get(uuidString);
-		mplayer = MPlayer.get(uuid);
-		mplayer = MPlayer.get(commandSender);
-		mplayer = MPlayer.get(p);
-		
-		mplayer = MPlayer.get(IdUtil.getId(p.getName()));
+		FPlayer fPlayer = FPlayers.getInstance().getByPlayer(p);
 		
 		//Get faction object
-		Faction f = mplayer.getFaction();
-		
+		Faction faction = fPlayer.getFaction();
 		if(args.length == 0)
 		{
 			try
 			{
-				if(!f.getLeader().equals(mplayer))
+				if(!faction.getFPlayerAdmin().equals(fPlayer))
 				{
-					p.sendMessage(Utils.logo + "§cYou must be the leader in order to do this command!");
+					p.sendMessage(Utils.logo + "§cYou must be the admin in order to do this command!");
 					return true;
 				}
 				// GUI
@@ -125,7 +116,6 @@ public class DungeonCMD implements CommandExecutor {
 				return true;
 			}catch(java.lang.NullPointerException ex)
 			{
-				ex.printStackTrace();
 				p.sendMessage(Utils.logo + "§cYou must be in a faction in order to do this command!");
 				return true;
 			}

@@ -1,5 +1,6 @@
 package it.skyhash.git.dungeons;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,22 +13,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
-import io.lumine.xikage.mythicmobs.mobs.MythicMob;
-
-public class Dungeon {
+public class Dungeon implements Serializable {
 	
-	
-	private Location location;
+	private static final long serialVersionUID = -3559126648546988403L;
+	transient private Location location;
 	private String name;
 	private int cost;
-	private ItemStack icon;
-	private World world;
+	transient private ItemStack icon;
+	transient private World world;
 	private boolean inGame;
-	private ArrayList<Player> playerInDungeon;
-	private Map<Player,Location> playerLastLocation;
+	transient private ArrayList<Player> playerInDungeon;
+	transient private Map<Player,Location> playerLastLocation;
 	private List<String> mobs;
-	private ArrayList<ItemStack> prizes;
+	transient private ArrayList<ItemStack> prizes;
 	private int duration;
 	private int cont;
 	private int moneyPrize;

@@ -1,10 +1,7 @@
 package it.skyhash.git.dungeons;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -14,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -24,7 +22,7 @@ import net.minecraft.server.v1_8_R3.NBTTagList;
 
 public class Utils {
 	
-	public static String logo = "§bVolgain§f§lDungeons §8>";
+	public static String logo;
 	public static Economy economy = null;
 	
 	
@@ -66,7 +64,7 @@ public class Utils {
 		{
 			p.sendMessage(Utils.logo + "§bCongratulations you have completed §d"+d.getName());
 			p.sendMessage(Utils.logo + "§cYou will be teleported to your last location!");
-			p.teleport(d.getLastLoc().get(p));	
+			p.teleport(d.getLastLoc().get(p));
 			for(ItemStack i : d.getPrizes())
 			{
 				p.getInventory().addItem(i);
@@ -81,6 +79,19 @@ public class Utils {
 		}
 		d.setGameStatus(false);
 		d.removePlayers();
+		//Mobs
+		Entity[] ent = d.getLocation().getChunk().getEntities();
+		for(Entity e : ent)
+		{
+			Location loc = new Location(e.getWorld(),e.getLocation().getX(),e.getLocation().getY()-200,e.getLocation().getZ());
+			for(Player p : Bukkit.getOnlinePlayers())
+			{
+				if(p.getUniqueId() != e.getUniqueId())
+				{
+					e.teleport(loc);
+				}
+			}
+		}		
 	}
 	
 	private static boolean setupEconomy() {
